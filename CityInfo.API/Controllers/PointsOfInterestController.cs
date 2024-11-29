@@ -51,33 +51,27 @@ namespace CityInfo.API.Controllers
         }
 
         [HttpPost]
-        public ActionResult<PointOfInterestDto> CreatePointOfInterest(int cityId, PointOfInterestForCreationDto pointOfInterest)
+        public async Task<ActionResult<PointOfInterestDto>> CreatePointOfInterest(int cityId, PointOfInterestForCreationDto pointOfInterest)
         {
-            var city = CitiesDataStore.Current.Cities.FirstOrDefault(c => c.Id == cityId);
-            if (city == null)
+            if (!await _cityInfoRepository.CityExistsAsync(cityId))
             {
                 return NotFound();
             }
 
-            //for demo purposes
-            var maxPointOfInterestId = CitiesDataStore.Current.Cities.SelectMany(c => c.PointsOfInterest).Max(p => p.Id);
+            var pointOfInterestEntity = _mapper.Map<Entities.PointOfInterest>(pointOfInterest);
 
-            var newPointOfInterest = new PointOfInterestDto()
-            {
-                Id = ++maxPointOfInterestId,
-                Name = pointOfInterest.Name,
-                Description = pointOfInterest.Description
-            };
+            await _cityInfoRepository.AddPointOfInterestForCityAsync(cityId, pointOfInterestEntity);
+            await _cityInfoRepository.SaveChangesAsync();
 
-            city.PointsOfInterest.Add(newPointOfInterest);
+            var createdPointOfInterest = _mapper.Map<Models.PointOfInterestDto>(pointOfInterestEntity);
 
             return CreatedAtRoute("GetPointOfInterest",
                 new
                 {
-                    cityId = cityId,
-                    pointOfInterestId = newPointOfInterest.Id
+                    cityId,
+                    pointOfInterestId = createdPointOfInterest.Id
                 },
-                newPointOfInterest);
+                createdPointOfInterest);
         }
 
         [HttpPut("{pointOfInterestId}")]
@@ -88,7 +82,7 @@ namespace CityInfo.API.Controllers
             {
                 return NotFound();
             }
-            
+
             var pointOfInterestToUpdate = city.PointsOfInterest.FirstOrDefault(p => p.Id == pointOfInterestId);
             if (pointOfInterestToUpdate == null)
             {
