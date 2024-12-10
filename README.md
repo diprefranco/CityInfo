@@ -1,5 +1,4 @@
-CityInfo API
-============
+# CityInfo API
 This project is an ASP.NET Core Web API that provides information about cities and their points of interest. It was created to explore and practice the fundamentals of ASP.NET Core Web API development.
 
 ## Features
@@ -25,11 +24,11 @@ Use an API client like [Postman](https://www.postman.com/) to interact with the 
 ## Version Information
 This project was built with the .NET 8.0 framework.
 
-## Copyright
-This API is for learning purposes and was built from the course ["ASP.NET Core Web API Fundamentals"](https://app.pluralsight.com/library/courses/asp-dot-net-core-6-web-api-fundamentals/table-of-contents) by Kevin Dockx.
+## Course
+This API is for learning purposes and was built from the course [ASP.NET Core Web API Fundamentals](https://app.pluralsight.com/library/courses/asp-dot-net-core-6-web-api-fundamentals/table-of-contents) by Kevin Dockx.
 
 ## Author
 GitHub: [Franco Dipre](https://github.com/diprefranco/)
 
 ## License
-[MIT LICENSE](LICENSE)
+This project is licensed under the [MIT LICENSE](LICENSE).
